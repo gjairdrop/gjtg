@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stars Premium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://esm.sh/stripe@13.3.0"></script>
+    <style>
+        #loading {
+            display: flex;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #loading div {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            background-color: #1a202c;
+            color: #fbd38d;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #loading div .animate-spin {
+            border: 4px solid #fbd38d;
+            border-top-color: transparent;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        body {
+            background-color: #2d3748;
+            color: #fbd38d;
+            font-family: 'Arial', sans-serif;
+        }
+
+        header {
+            background-color: #1a202c;
+            color: #fbd38d;
+        }
+
+        nav a {
+            color: #fbd38d;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #ecc94b;
+        }
+
+        .card {
+            background-color: #1a202c;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            color: #fbd38d;
+            transition: background-color 0.3s ease;
+        }
+
+
+        .btn {
+            background-color: #fbd38d;
+            color: #1a202c;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-align: center;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #ecc94b;
+        }
+
+        .text-lg {
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="max-w-4xl mx-auto p-4">
+        <header class="flex items-center justify-between p-4 bg-black rounded-lg shadow-sm mb-8">
+            <div class="flex items-center gap-4">
+                <img src="./IMG/gj.jpg"alt="Logo" class="w-12 h-12">
+                <nav class="flex gap-8">
+                    <a href="#" class="font-medium">Stars</a>
+                    <a href="#" class="font-medium">Premium</a>
+                    <a href="#" class="font-medium">Support</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="bg-black rounded-lg shadow-sm p-8">
+            <div class="grid gap-6">
+                <div class="card flex justify-between items-center p-4">
+                    <span class="text-lg">50 stars</span>
+                    <a href="https://app.tonkeeper.com/transfer/UQDScr_Lq2aCYc0opI-wBSSlSHr4lOATUPYrWqrE5FeyHpSA?amount=126000000" class="btn">0.126Ton</a>
+                </div>
+
+                <div class="card flex justify-between items-center p-4">
+                    <span class="text-lg">250 stars</span>
+                    <a href="https://app.tonkeeper.com/transfer/UQDScr_Lq2aCYc0opI-wBSSlSHr4lOATUPYrWqrE5FeyHpSA?amount=561000000" class="btn">0.56Ton</a>
+                </div>
+
+                <div class="card flex justify-between items-center p-4">
+                    <span class="text-lg">500 stars</span>
+                    <a href="https://app.tonkeeper.com/transfer/UQDScr_Lq2aCYc0opI-wBSSlSHr4lOATUPYrWqrE5FeyHpSA?amount=1160000000" class="btn">1.16Ton</a>
+                </div>
+
+                <div class="card flex justify-between items-center p-4">
+                    <span class="text-lg">1k stars</span>
+                    <a href="https://app.tonkeeper.com/transfer/UQDScr_Lq2aCYc0opI-wBSSlSHr4lOATUPYrWqrE5FeyHpSA?amount=2220000000" class="btn">2.22Ton</a>
+                </div>
+
+                <div class="card flex justify-between items-center p-4">
+                    <span class="text-lg">5k stars</span>
+                    <a href="https://app.tonkeeper.com/transfer/UQDScr_Lq2aCYc0opI-wBSSlSHr4lOATUPYrWqrE5FeyHpSA?amount=11100000000" class="btn">11.1Ton</a>
+                </div>
+
+                <div class="card flex justify-between items-center p-4">
+                    <span class="text-lg">10k stars</span>
+                    <a href="https://app.tonkeeper.com/transfer/UQDScr_Lq2aCYc0opI-wBSSlSHr4lOATUPYrWqrE5FeyHpSA?amount=22220000000" class="btn">22.22Ton</a>
+                </div>
+
+                <div class="card flex justify-between items-center p-4">
+                    <span class="text-lg">50k stars</span>
+                    <a href="https://app.tonkeeper.com/transfer/UQDScr_Lq2aCYc0opI-wBSSlSHr4lOATUPYrWqrE5FeyHpSA?amount=110000000000" class="btn">110Ton</a>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
