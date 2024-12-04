@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://esm.sh/stripe@13.3.0"></script>
     <style>
+        /* Các style vẫn giữ nguyên */
         #loading {
             display: flex;
             position: fixed;
@@ -76,7 +77,6 @@
             transition: background-color 0.3s ease;
         }
 
-
         .btn {
             background-color: #fbd38d;
             color: #1a202c;
@@ -101,7 +101,7 @@
     <div class="max-w-4xl mx-auto p-4">
         <header class="flex items-center justify-between p-4 bg-black rounded-lg shadow-sm mb-8">
             <div class="flex items-center gap-4">
-                <img src="./IMG/gj.jpg"alt="Logo" class="w-12 h-12">
+                <img src="./IMG/gj.jpg" alt="Logo" class="w-12 h-12">
                 <nav class="flex gap-8">
                     <a href="#" class="font-medium">Stars</a>
                     <a href="./premium.html" class="font-medium">Premium</a>
@@ -111,44 +111,97 @@
         </header>
 
         <main class="bg-black rounded-lg shadow-sm p-8">
-            <div class="grid gap-6">
+            <div class="grid gap-6" id="stars-list">
+                <!-- Các sản phẩm với giá USD sẽ được tự động chuyển đổi thành TON -->
                 <div class="card flex justify-between items-center p-4">
                     <span class="text-lg">50 Stars</span>
-                    <a href="https://app.tonkeeper.com/transfer/UQDScr_Lq2aCYc0opI-wBSSlSHr4lOATUPYrWqrE5FeyHpSA?amount=126000000" class="btn">0.126Ton</a>
+                    <a id="50-stars" href="#" class="btn">0.9 USDT</a>
                 </div>
 
                 <div class="card flex justify-between items-center p-4">
                     <span class="text-lg">250 Stars</span>
-                    <a href="https://app.tonkeeper.com/transfer/UQDScr_Lq2aCYc0opI-wBSSlSHr4lOATUPYrWqrE5FeyHpSA?amount=561000000" class="btn">0.56Ton</a>
+                    <a id="250-stars" href="#" class="btn">4 USDT</a>
                 </div>
 
                 <div class="card flex justify-between items-center p-4">
                     <span class="text-lg">500 Stars</span>
-                    <a href="https://app.tonkeeper.com/transfer/UQDScr_Lq2aCYc0opI-wBSSlSHr4lOATUPYrWqrE5FeyHpSA?amount=1160000000" class="btn">1.16Ton</a>
+                    <a id="500-stars" href="#" class="btn">8 USDT</a>
                 </div>
 
                 <div class="card flex justify-between items-center p-4">
                     <span class="text-lg">1k Stars</span>
-                    <a href="https://app.tonkeeper.com/transfer/UQDScr_Lq2aCYc0opI-wBSSlSHr4lOATUPYrWqrE5FeyHpSA?amount=2220000000" class="btn">2.22Ton</a>
+                    <a id="1k-stars" href="#" class="btn">16 USDT</a>
                 </div>
 
                 <div class="card flex justify-between items-center p-4">
                     <span class="text-lg">5k Stars</span>
-                    <a href="https://app.tonkeeper.com/transfer/UQDScr_Lq2aCYc0opI-wBSSlSHr4lOATUPYrWqrE5FeyHpSA?amount=11100000000" class="btn">11.1Ton</a>
+                    <a id="5k-stars" href="#" class="btn">78.7 USDT</a>
                 </div>
 
                 <div class="card flex justify-between items-center p-4">
                     <span class="text-lg">10k Stars</span>
-                    <a href="https://app.tonkeeper.com/transfer/UQDScr_Lq2aCYc0opI-wBSSlSHr4lOATUPYrWqrE5FeyHpSA?amount=22220000000" class="btn">22.22Ton</a>
+                    <a id="10k-stars" href="#" class="btn">156.7 USDT</a>
                 </div>
 
                 <div class="card flex justify-between items-center p-4">
                     <span class="text-lg">50k Stars</span>
-                    <a href="https://app.tonkeeper.com/transfer/UQDScr_Lq2aCYc0opI-wBSSlSHr4lOATUPYrWqrE5FeyHpSA?amount=110000000000" class="btn">110Ton</a>
+                    <a id="50k-stars" href="#" class="btn">771.7 USDT</a>
                 </div>
             </div>
         </main>
     </div>
+    <script>
+        // Dữ liệu về số lượng Stars và giá trị USDT tương ứng
+        const starData = [
+            { stars: 50, usdt: 0.9 },
+            { stars: 250, usdt: 4 },
+            { stars: 500, usdt: 8 },
+            { stars: 1000, usdt: 16 },
+            { stars: 5000, usdt: 78.7 },
+            { stars: 10000, usdt: 156.7 },
+            { stars: 50000, usdt: 771.7 }
+        ];
+    
+        // Lấy tỷ giá TON/USDT từ CoinMarketCap
+        async function getTonToUsdtRate() {
+            try {
+                const response = await fetch('https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest', {
+                    headers: {
+                        'X-CMC_PRO_API_KEY': '7fe981bb-6be8-43a9-a3f6-0a584cc42c5d' // API key của bạn
+                    }
+                });
+                const data = await response.json();
+                const tonData = data.data.find(coin => coin.symbol === 'TON');
+                return tonData ? tonData.quote.USDT.price : 2.5; // Trả về tỷ giá TON/USDT
+            } catch (error) {
+                console.error("Lỗi khi lấy tỷ giá TON từ CoinMarketCap:", error);
+                return 2.5; // Tỷ lệ mặc định nếu API gặp sự cố
+            }
+        }
+    
+        // Cập nhật thông tin các sản phẩm sau khi lấy tỷ giá
+        async function updateStarLinks() {
+            const tonRate = await getTonToUsdtRate();  // Lấy tỷ giá TON/USDT từ CoinMarketCap
+    
+            // Cập nhật thông tin các sản phẩm
+            starData.forEach(({ stars, usdt }) => {
+                const tonAmount = (usdt / tonRate).toFixed(6); // Chuyển từ USDT sang TON
+                const tonAmountInMicros = (tonAmount * 1e9).toFixed(0); // Chuyển từ TON sang microTON
+    
+                // Cập nhật giá trị của mỗi sản phẩm
+                const link = document.getElementById(`${stars}-stars`);
+                if (link) {
+                    // Cập nhật đường dẫn với số microTON tính được
+                    link.href = `https://app.tonkeeper.com/transfer/UQDScr_Lq2aCYc0opI-wBSSlSHr4lOATUPYrWqrE5FeyHpSA?amount=${tonAmountInMicros}`;
+                    // Cập nhật giá trị hiển thị với số TON
+                    link.innerHTML = `${tonAmount} TON`;
+                }
+            });
+        }
+    
+        // Gọi hàm cập nhật các sản phẩm khi trang được tải
+        updateStarLinks();
+    </script>
 </body>
 
 </html>
