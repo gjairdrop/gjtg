@@ -8,7 +8,69 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://esm.sh/stripe@13.3.0"></script>
     <style>
-       
+       button {
+            position: relative;
+            display: inline-block;
+            margin: 15px;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-decoration: none;
+            color: #36cb2c;
+            background: transparent;
+            cursor: pointer;
+            transition: ease-out 0.5s;
+            border: 2px solid #dfc231;
+            border-radius: 8px;
+            box-shadow: inset 0 0 0 0 #dfc231;
+            width: 120px;
+            height: 40px;
+        }
+
+        button:hover {
+            color: white;
+            box-shadow: inset 0 -100px 0 0 #dfc231;
+        }
+
+        button:active {
+            transform: scale(0.9);
+        }
+
+        .cards {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #1a202c;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            color: #fbd38d;
+            transition: transform 0.5s ease, filter 0.3s ease;
+            flex: 1 1 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: scale(1.1);
+        }
+
+        footer {
+            background-color: #1a202c;
+            color: #fbd38d;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
         #loading {
             display: flex;
             position: fixed;
@@ -67,41 +129,6 @@
         nav a:hover {
             color: #ecc94b;
         }
-
-        .card {
-            background-color: #1a202c;
-            border-radius: 8px;
-            padding: 1rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            color: #fbd38d;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn {
-            background-color: #fbd38d;
-            color: #1a202c;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            text-align: center;
-            display: inline-block;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn:hover {
-            background-color: #ecc94b;
-        }
-
-        .text-lg {
-            font-size: 1.25rem;
-        }
-    
-        footer {
-            background-color: #1a202c;
-            color: #fbd38d;
-            text-align: center;
-            padding: 1rem;
-            margin-top: 2rem;
-        }
     </style>
 </head>
 
@@ -122,22 +149,20 @@
 
         <main class="bg-black rounded-lg shadow-sm p-8">
             <div class="grid gap-6" id="premium-list">
-                <!-- Các sản phẩm với giá USD sẽ được tự động chuyển đổi thành TON -->
                 <div class="card flex justify-between items-center p-4">
                     <span class="text-lg">Telegram Premium 3months</span>
-                    <a id="3-premium" href="#" class="btn">13 USDT</a>
+                    <button id="3-premium" href="#" class="btn">13 USDT</button>
                 </div>
 
                 <div class="card flex justify-between items-center p-4">
                     <span class="text-lg">Telegram Premium 6months</span>
-                    <a id="6-premium" href="#" class="btn">18 USDT</a>
+                    <button id="6-premium" href="#" class="btn">18 USDT</button>
                 </div>
 
                 <div class="card flex justify-between items-center p-4">
                     <span class="text-lg">Telegram Premium 1year</span>
-                    <a id="12-premium" href="#" class="btn">33 USDT</a>
+                    <button id="12-premium" href="#" class="btn">33 USDT</button>
                 </div>
-
             </div>
         </main>
     </div>
@@ -145,62 +170,47 @@
         <p>Built by tdat👑</p>
     </footer>
     <script>
-        // Dữ liệu về premium và giá trị USDT tương ứng
         const premiumData = [
             { premium: 3, usdt: 13 },
             { premium: 6, usdt: 18 },
             { premium: 12, usdt: 33 },
         ];
 
-        // Lấy tỷ giá TON/USDT
         async function getTonToUsdtRate() {
             try {
                 const response = await fetch('https://min-api.cryptocompare.com/data/price?fsym=TON&tsyms=USDT', {
                     headers: {
-                        'Authorization': 'f2b1d7e5216d1377e168ff93e28319bb8beae6f65b606a26ca2b8e440f22d359' // Replace with your actual API key
+                        'Authorization': 'f2b1d7e5216d1377e168ff93e28319bb8beae6f65b606a26ca2b8e440f22d359'
                     }
                 });
                 const data = await response.json();
 
                 if (data && data.USDT) {
-                    return data.USDT; // Return TON to USDT rate
+                    return data.USDT;
                 } else {
-                    console.error('Error fetching TON price data from CryptoCompare.');
-                    return 7.5; // Default rate if the data is incorrect or missing
+                    return 7.5;
                 }
             } catch (error) {
-                console.error("Error fetching TON price from CryptoCompare:", error);
-                return 7.5; // Default rate if there's an error
+                return 7.5;
             }
         }
 
         async function updatepremiumLinks() {
-            const tonRate = await getTonToUsdtRate();  // Fetch TON/USDT rate from CryptoCompare
-            console.log("TON/USDT Rate:", tonRate);  // Debug log to verify if the rate is fetched correctly
+            const tonRate = await getTonToUsdtRate();
 
-            // Update the product information
             premiumData.forEach(({ premium, usdt }) => {
-                const tonAmount = (usdt / tonRate).toFixed(6); // Convert USDT to TON
-                const tonAmountInMicros = (tonAmount * 1e9).toFixed(0); // Convert TON to microTON
+                const tonAmount = (usdt / tonRate).toFixed(6);
+                const tonAmountInMicros = (tonAmount * 1e9).toFixed(0);
 
                 const link = document.getElementById(`${premium}-premium`);
                 if (link) {
-                    console.log(`Updating link for ${premium} premium`);  // Debug log to check if the link is found
-
-                    // Update the link with the amount in microTON
                     link.href = `https://app.tonkeeper.com/transfer/UQDScr_Lq2aCYc0opI-wBSSlSHr4lOATUPYrWqrE5FeyHpSA?amount=${tonAmountInMicros}`;
-
-                    // Update the displayed price with the converted TON amount
                     link.innerHTML = `${tonAmount} TON`;
-                } else {
-                    console.log(`No link found for ${premium} premium`);  // Debug log if link is missing
                 }
             });
         }
 
-        // Ensure the function is called once the page is fully loaded
         updatepremiumLinks();
-
     </script>
 </body>
 
